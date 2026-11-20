@@ -1733,8 +1733,8 @@ html,#gate, #gate *{visibility:visible;box-sizing:border-box}
 </div>
 <script>
 (function(){
-  var SALT = "9fd98a607b624adf81b9cf51e2ce6522";
-  var EXPECT = "83cc3ea5a774d1976c77fc8e1500c20def0ebe6d462b6eab510360cb3d0899a4";
+  var SALT = "aea0a373607943f2af16733a03748f45";
+  var EXPECT = "e913ed2f8357959ecb958e0ac407da299735738bc26d213725c68cfc5278ca32";
   function hex(buf){ return Array.prototype.map.call(new Uint8Array(buf), function(b){ return ("0" + b.toString(16)).slice(-2); }).join(""); }
   function unlock(){
     sessionStorage.setItem("pfOK","1");
@@ -1753,7 +1753,7 @@ html,#gate, #gate *{visibility:visible;box-sizing:border-box}
         if (st && st.parentNode) st.parentNode.removeChild(st);
         document.documentElement.style.visibility = "visible";
       }, 520);
-    }, 1000);
+    }, 2500);
   }
   if (sessionStorage.getItem("pfOK") === "1") { unlock(); return; }
   document.documentElement.style.overflow = "hidden";
