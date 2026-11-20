@@ -1715,6 +1715,10 @@ html,#gate, #gate *{visibility:visible;box-sizing:border-box}
 #gate input:focus{border-color:#2563eb}
 #gate button{width:100%;margin-top:18px;padding:10px;border:none;border-radius:8px;background:#2563eb;color:#fff;font-size:14px;cursor:pointer}
 #gate .err{color:#dc2626;font-size:12.5px;margin-top:10px;min-height:18px;text-align:center}
+#gate .loader{display:flex;flex-direction:column;align-items:center;gap:14px;padding:10px 0 4px}
+#gate .spin{width:34px;height:34px;border:3px solid #dbe4f2;border-top-color:#2563eb;border-radius:50%;animation:gspin .8s linear infinite}
+#gate .ltext{font-size:13px;color:#64748b}
+@keyframes gspin{to{transform:rotate(360deg)}}
 </style>
 <div id="gate">
   <div class="card">
@@ -1729,17 +1733,27 @@ html,#gate, #gate *{visibility:visible;box-sizing:border-box}
 </div>
 <script>
 (function(){
-  var SALT = "d4d1a93984e842aa96d85c1d7c958f10";
-  var EXPECT = "ea2303d43195d23b08d7248e8122d2494e23fb9636f9e28636a913c612497308";
+  var SALT = "9fd98a607b624adf81b9cf51e2ce6522";
+  var EXPECT = "83cc3ea5a774d1976c77fc8e1500c20def0ebe6d462b6eab510360cb3d0899a4";
   function hex(buf){ return Array.prototype.map.call(new Uint8Array(buf), function(b){ return ("0" + b.toString(16)).slice(-2); }).join(""); }
   function unlock(){
-    var g = document.getElementById("gate");
-    if (g) g.parentNode.removeChild(g);
-    var st = document.getElementById("gateStyle");
-    if (st) st.parentNode.removeChild(st);
-    document.documentElement.style.visibility = "visible";
-    document.documentElement.style.overflow = "";
     sessionStorage.setItem("pfOK","1");
+    document.documentElement.style.visibility = "visible";
+    var card = document.querySelector("#gate .card");
+    var st = document.getElementById("gateStyle");
+    card.innerHTML = '<div class="loader"><div class="spin"></div><div class="ltext">正在加载平台数据…</div></div>';
+    document.documentElement.style.overflow = "";
+    setTimeout(function(){
+      var g = document.getElementById("gate");
+      g.style.transition = "opacity .5s ease";
+      g.style.opacity = "0";
+      document.documentElement.style.overflow = "";
+      setTimeout(function(){
+        if (g && g.parentNode) g.parentNode.removeChild(g);
+        if (st && st.parentNode) st.parentNode.removeChild(st);
+        document.documentElement.style.visibility = "visible";
+      }, 520);
+    }, 1000);
   }
   if (sessionStorage.getItem("pfOK") === "1") { unlock(); return; }
   document.documentElement.style.overflow = "hidden";
